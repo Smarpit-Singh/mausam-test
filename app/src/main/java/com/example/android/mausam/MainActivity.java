@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.mausam.data.WeatherPreference;
@@ -19,6 +21,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mWeatherTextView;
+    private TextView mErrorMessageDisplay;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +30,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mWeatherTextView = findViewById(R.id.tv_weather_data);
+        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
+        mProgressBar = findViewById(R.id.pb_loading_indicator);
 
         loadWeatherData();
     }
 
     private void loadWeatherData(){
+        showWeatherDataView();
+
         String prefLocation = WeatherPreference.getPreferedWatherLocation(this);
         new WeatherTaskClass().execute(prefLocation);
+    }
+
+
+    private void showWeatherDataView(){
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+
+        mWeatherTextView.setVisibility(View.VISIBLE);
+    }
+
+
+    private void showErrorMessage(){
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+
+        mWeatherTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -56,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public class WeatherTaskClass extends AsyncTask<String, Void, String[]>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String[] doInBackground(String... urlLoc) {
@@ -84,12 +112,20 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] strings) {
+
+            mProgressBar.setVisibility(View.INVISIBLE);
+
            if (strings != null){
+
+               showWeatherDataView();
+
 
                for (String data : strings){
 
                    mWeatherTextView.append(data + "\n\n\n");
                }
+           }else {
+               showErrorMessage();
            }
         }
     }
