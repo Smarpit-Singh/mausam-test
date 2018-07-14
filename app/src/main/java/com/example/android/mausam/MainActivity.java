@@ -3,12 +3,15 @@ package com.example.android.mausam;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.mausam.adapter.ForecastAdapter;
 import com.example.android.mausam.data.WeatherPreference;
 import com.example.android.mausam.utils.NetworkUtils;
 import com.example.android.mausam.utils.OpenWeatherJsonUtils;
@@ -20,18 +23,26 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mWeatherTextView;
+    private RecyclerView mRecyclerView;
     private TextView mErrorMessageDisplay;
     private ProgressBar mProgressBar;
+    private ForecastAdapter mForecastAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mWeatherTextView = findViewById(R.id.tv_weather_data);
+        mRecyclerView = findViewById(R.id.recyclerview_forecast);
+        mForecastAdapter = new ForecastAdapter();
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mProgressBar = findViewById(R.id.pb_loading_indicator);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mForecastAdapter);
 
         loadWeatherData();
     }
@@ -47,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private void showWeatherDataView(){
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
-        mWeatherTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
     private void showErrorMessage(){
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
 
-        mWeatherTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -68,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh){
-            mWeatherTextView.setText("");
+            mForecastAdapter.setmWeatherData(null);
+            
             loadWeatherData();
             return true;
         }
@@ -119,11 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
                showWeatherDataView();
 
+               mForecastAdapter.setmWeatherData(strings);
 
-               for (String data : strings){
-
-                   mWeatherTextView.append(data + "\n\n\n");
-               }
            }else {
                showErrorMessage();
            }
