@@ -1,5 +1,6 @@
 package com.example.android.mausam;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
 
     @Override
     public void onClick(String str) {
-        Toast.makeText(this, "str", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, DetailActivity.class));
     }
 
 
