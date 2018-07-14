@@ -3,6 +3,8 @@ package com.example.android.mausam;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.android.mausam.data.WeatherPreference;
@@ -32,6 +34,26 @@ public class MainActivity extends AppCompatActivity {
         String prefLocation = WeatherPreference.getPreferedWatherLocation(this);
         new WeatherTaskClass().execute(prefLocation);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.forecast, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_refresh){
+            mWeatherTextView.setText("");
+            loadWeatherData();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     public class WeatherTaskClass extends AsyncTask<String, Void, String[]>{
 

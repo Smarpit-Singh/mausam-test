@@ -1,6 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Mausam</string>
 
+    <string name="action_refresh">Refresh</string>
 
     <string name="today">Today</string>
 
