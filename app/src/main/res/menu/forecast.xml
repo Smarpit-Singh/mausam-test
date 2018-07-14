@@ -5,4 +5,8 @@
     <item android:id="@+id/action_refresh"
         app:showAsAction="always"
         android:title="@string/action_refresh"/>
+
+    <item android:id="@+id/action_map"
+        app:showAsAction="always"
+        android:title="@string/action_map"/>
 </menu>
