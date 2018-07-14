@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.mausam.adapter.ForecastAdapter;
 import com.example.android.mausam.data.WeatherPreference;
@@ -21,7 +22,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler{
 
     private RecyclerView mRecyclerView;
     private TextView mErrorMessageDisplay;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recyclerview_forecast);
-        mForecastAdapter = new ForecastAdapter();
+        mForecastAdapter = new ForecastAdapter(this);
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mProgressBar = findViewById(R.id.pb_loading_indicator);
 
@@ -80,13 +81,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_refresh){
             mForecastAdapter.setmWeatherData(null);
-            
+
             loadWeatherData();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(String str) {
+        Toast.makeText(this, "str", Toast.LENGTH_SHORT).show();
+    }
 
 
     public class WeatherTaskClass extends AsyncTask<String, Void, String[]>{

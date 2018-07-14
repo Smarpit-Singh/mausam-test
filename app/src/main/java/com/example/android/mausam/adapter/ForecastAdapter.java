@@ -12,8 +12,14 @@ import com.example.android.mausam.R;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
     private String[] mWeatherData;
+    private ForecastAdapterOnClickHandler mClickHandler;
 
-    public ForecastAdapter() {
+    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+    }
+
+    public interface ForecastAdapterOnClickHandler{
+        void onClick(String str);
     }
 
     @NonNull
@@ -39,13 +45,20 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         notifyDataSetChanged();
     }
 
-    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public final TextView mWeatherTextView;
 
         public ForecastAdapterViewHolder(View itemView) {
             super(itemView);
             this.mWeatherTextView = itemView.findViewById(R.id.tv_weather_data);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mClickHandler.onClick(mWeatherData[getAdapterPosition()]);
         }
     }
 }
