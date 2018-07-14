@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_refresh"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/action_refresh"/>
 
     <item android:id="@+id/action_map"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/action_map"/>
+
+    <item android:id="@+id/action_setting_forecast"
+        android:title="@string/action_setting"
+        app:showAsAction="ifRoom"/>
 </menu>

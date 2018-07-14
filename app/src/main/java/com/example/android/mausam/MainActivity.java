@@ -91,6 +91,13 @@ public class MainActivity extends AppCompatActivity implements
 
         } else if (id == R.id.action_map) {
             openLocationInMap();
+
+            return true;
+        } else if (id == R.id.action_setting_forecast){
+
+            startActivity(new Intent(this, SettingActivity.class));
+
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    
+
     @Override
     public Loader<String[]> onCreateLoader(int id, Bundle args) {
 
