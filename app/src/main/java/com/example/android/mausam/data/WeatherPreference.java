@@ -1,6 +1,10 @@
 package com.example.android.mausam.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.example.android.mausam.R;
 
 public class WeatherPreference {
 
@@ -34,7 +38,12 @@ public class WeatherPreference {
 
     public static String getPreferedWatherLocation(Context context){
 
-        return getDefaultWeatherLocation();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String keyForLocation = context.getString(R.string.pref_location_key);
+        String defaultLocation = context.getString(R.string.pref_location_default);
+
+        return sharedPreferences.getString(keyForLocation, defaultLocation);
     }
 
 
@@ -45,7 +54,21 @@ public class WeatherPreference {
 
     public static boolean isMetric(Context context){
 
-        return false;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String keyForMetric = context.getString(R.string.pref_units_key);
+        String defaultMetric = context.getString(R.string.pref_units_metric);
+
+        String preferedUnit = sharedPreferences.getString(keyForMetric, defaultMetric);
+        String metric = defaultMetric;
+        boolean userPreferedMetric;
+
+        if (preferedUnit.equals(metric)){
+            userPreferedMetric = true;
+        }else {
+            userPreferedMetric = false;
+        }
+        return userPreferedMetric;
     }
 
     public static boolean isLatLongAvailable(Context context){

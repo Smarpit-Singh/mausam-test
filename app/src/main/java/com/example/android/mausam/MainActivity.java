@@ -5,8 +5,10 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +33,8 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
         ForecastAdapter.ForecastAdapterOnClickHandler,
-        LoaderManager.LoaderCallbacks<String[]> {
+        LoaderManager.LoaderCallbacks<String[]> ,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int FORECAST_LOADER_ID = 0;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mErrorMessageDisplay;
     private ProgressBar mProgressBar;
     private ForecastAdapter mForecastAdapter;
+    private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,29 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(mForecastAdapter);
 
         getLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (PREFERENCES_HAVE_BEEN_UPDATED){
+            getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
+            PREFERENCES_HAVE_BEEN_UPDATED = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
 
@@ -103,7 +130,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void openLocationInMap() {
-        Uri geoLoc = Uri.parse("geo:0,0?q=1600 Ampitheatre Parkway, CA");
+        String addressString = WeatherPreference.getPreferedWatherLocation(this);
+        Uri geoLoc = Uri.parse("geo:0,0?q=" + addressString);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLoc);
 
@@ -152,6 +181,10 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PREFERENCES_HAVE_BEEN_UPDATED = true;
+    }
 
 
     private class WeatherAsyncTaskLoader extends AsyncTaskLoader<String[]> {
