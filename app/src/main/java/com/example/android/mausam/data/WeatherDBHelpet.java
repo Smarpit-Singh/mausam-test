@@ -33,14 +33,15 @@ public class WeatherDBHelpet extends SQLiteOpenHelper {
                         WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
                         WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
                         WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
-                        WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL);";
+                        WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
+                        " UNIQUE (" + WeatherEntry.COLUMN_DATE + ") ON CONFLICT REPLACE);";
 
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ WeatherEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
 
         onCreate(db);
     }
