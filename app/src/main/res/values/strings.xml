@@ -9,10 +9,22 @@
     </string>
 
     <string name="today">Today</string>
-
     <string name="tomorrow">Tomorrow</string>
 
 
+    // for preference usages
+    <string name="pref_location_label">Location</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_default" translatable="false">Mountain View, CA 94043 </string>
+    <string name="pref_units_label">Temperature Units</string>
+    <string name="pref_units_label_metric">Metric</string>
+    <string name="pref_units_label_imperial">Imperial</string>
+    <string name="pref_units_key" translatable="false">units</string>
+    <string name="pref_units_metric" translatable="false">metric</string>
+    <string name="pref_units_imperial" translatable="false">imperial</string>
+
+
+    // for date and time things
     <string name="format_full_friendly_date">
         <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
     </string>
@@ -34,6 +46,8 @@
     <string name="format_wind_mph">
         <xliff:g id="speed">%1$1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
     </string>
+
+
 
 
     <string name="condition_2xx">Storm</string>
