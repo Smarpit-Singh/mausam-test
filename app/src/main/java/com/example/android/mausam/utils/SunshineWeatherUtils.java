@@ -11,44 +11,43 @@ public class SunshineWeatherUtils {
     private static final String LOG_TAG = SunshineWeatherUtils.class.getSimpleName();
 
 
-
-    public static double celsiusToFaranheit(double tempInCelsius){
-
-        double tempInFaranHeit = (tempInCelsius * 1.8) + 32;
-        return tempInFaranHeit;
+    private static double celsiusToFahrenheit(double temperatureInCelsius) {
+        double temperatureInFahrenheit = (temperatureInCelsius * 1.8) + 32;
+        return temperatureInFahrenheit;
     }
 
-    public static String convertTemprature(Context context, double temp){
-        int temperatureFormatResourceId = R.string.format_temperature_celsius;
 
-        if (WeatherPreference.isMetric(context)){
-            temp = celsiusToFaranheit(temp);
-            temperatureFormatResourceId = R.string.format_temperature_fahrenheit;
+    public static String formatTemperature(Context context, double temperature) {
+        if (!WeatherPreference.isMetric(context)) {
+            temperature = celsiusToFahrenheit(temperature);
         }
 
-        return String.format(context.getString(temperatureFormatResourceId), temp);
+        int temperatureFormatResourceId = R.string.format_temperature;
 
+        return String.format(context.getString(temperatureFormatResourceId), temperature);
     }
 
-    public static String formatHighLow(Context context, double high, double low){
 
+    public static String formatHighLows(Context context, double high, double low) {
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
-        String formattedHigh = convertTemprature(context, roundedHigh);
-        String formattedLow = convertTemprature(context, roundedLow);
+        String formattedHigh = formatTemperature(context, roundedHigh);
+        String formattedLow = formatTemperature(context, roundedLow);
 
-        return new String(formattedHigh +" / "+ formattedLow);
+        String highLowStr = formattedHigh + " / " + formattedLow;
+        return highLowStr;
     }
 
-    public static String getFormattedWind(Context context, float windSpeed, float degrees){
 
+    public static String getFormattedWind(Context context, float windSpeed, float degrees) {
         int windFormat = R.string.format_wind_kmh;
 
         if (!WeatherPreference.isMetric(context)) {
             windFormat = R.string.format_wind_mph;
             windSpeed = .621371192237334f * windSpeed;
         }
+
 
         String direction = "Unknown";
         if (degrees >= 337.5 || degrees < 22.5) {
@@ -68,12 +67,12 @@ public class SunshineWeatherUtils {
         } else if (degrees >= 292.5 && degrees < 337.5) {
             direction = "NW";
         }
+
         return String.format(context.getString(windFormat), windSpeed, direction);
     }
 
 
-    public static String getStringForWeatherConditions(Context context, int weatherId){
-
+    public static String getStringForWeatherCondition(Context context, int weatherId) {
         int stringId;
         if (weatherId >= 200 && weatherId <= 232) {
             stringId = R.string.condition_2xx;
@@ -239,11 +238,13 @@ public class SunshineWeatherUtils {
             default:
                 return context.getString(R.string.condition_unknown, weatherId);
         }
+
         return context.getString(stringId);
     }
 
 
-    public static int getIconResourceForWeatherCondition(int weatherId) {
+    public static int getSmallArtResourceIdForWeatherCondition(int weatherId) {
+
 
         if (weatherId >= 200 && weatherId <= 232) {
             return R.drawable.ic_storm;
@@ -259,7 +260,7 @@ public class SunshineWeatherUtils {
             return R.drawable.ic_snow;
         } else if (weatherId >= 701 && weatherId <= 761) {
             return R.drawable.ic_fog;
-        } else if (weatherId == 761 || weatherId == 781) {
+        } else if (weatherId == 761 || weatherId == 771 || weatherId == 781) {
             return R.drawable.ic_storm;
         } else if (weatherId == 800) {
             return R.drawable.ic_clear;
@@ -267,12 +268,21 @@ public class SunshineWeatherUtils {
             return R.drawable.ic_light_clouds;
         } else if (weatherId >= 802 && weatherId <= 804) {
             return R.drawable.ic_cloudy;
+        } else if (weatherId >= 900 && weatherId <= 906) {
+            return R.drawable.ic_storm;
+        } else if (weatherId >= 958 && weatherId <= 962) {
+            return R.drawable.ic_storm;
+        } else if (weatherId >= 951 && weatherId <= 957) {
+            return R.drawable.ic_clear;
         }
-        return -1;
+
+        Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
+        return R.drawable.ic_storm;
     }
 
 
-    public static int getArtResourceForWeatherCondition(int weatherId) {
+    public static int getLargeArtResourceIdForWeatherCondition(int weatherId) {
+
 
         if (weatherId >= 200 && weatherId <= 232) {
             return R.drawable.art_storm;
@@ -303,6 +313,7 @@ public class SunshineWeatherUtils {
         } else if (weatherId >= 951 && weatherId <= 957) {
             return R.drawable.art_clear;
         }
+
         Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
         return R.drawable.art_storm;
     }

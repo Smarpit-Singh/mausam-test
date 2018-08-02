@@ -7,16 +7,16 @@ import com.example.android.mausam.data.WeatherContract.WeatherEntry;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class WeatherDBHelpet extends SQLiteOpenHelper {
+public class WeatherDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "weather.db";
     private static final int DATABASE_VERSION = 1;
 
-    public WeatherDBHelpet(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public WeatherDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
-    public WeatherDBHelpet(Context context) {
+    public WeatherDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, null);
     }
 

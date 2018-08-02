@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void openLocationInMap() {
-        String addressString = WeatherPreference.getPreferedWatherLocation(this);
+        String addressString = WeatherPreference.getPreferredWeatherLocation(this);
         Uri geoLoc = Uri.parse("geo:0,0?q=" + addressString);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -209,9 +209,9 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public String[] loadInBackground() {
 
-            String urlQ = WeatherPreference.getPreferedWatherLocation(getApplicationContext());
+            String urlQ = WeatherPreference.getPreferredWeatherLocation(getApplicationContext());
 
-            URL url = NetworkUtils.buildUrl(urlQ);
+            URL url = NetworkUtils.getUrl(getApplicationContext());
 
             String[] result;
             try {
