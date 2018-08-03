@@ -5,9 +5,12 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.example.android.mausam.utils.SunshineDateUtils;
 
 public class WeatherProvider extends ContentProvider {
 
@@ -19,14 +22,13 @@ public class WeatherProvider extends ContentProvider {
     private WeatherDBHelper dbHelper;
 
 
-
-    public static UriMatcher buildUriMatcher(){
+    public static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = WeatherContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority , WeatherContract.PATH_WEATHER, CODE_WEATHER);
-        matcher.addURI(authority,  WeatherContract.PATH_WEATHER + "/#", CODE_WEATHER_WITH_ID);
+        matcher.addURI(authority, WeatherContract.PATH_WEATHER, CODE_WEATHER);
+        matcher.addURI(authority, WeatherContract.PATH_WEATHER + "/#", CODE_WEATHER_WITH_ID);
 
         return matcher;
     }
@@ -46,7 +48,7 @@ public class WeatherProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         Cursor myCursor;
 
-        switch (match){
+        switch (match) {
             case CODE_WEATHER:
                 myCursor = dbHelper.getReadableDatabase().query(
                         WeatherContract.WeatherEntry.TABLE_NAME,
@@ -69,8 +71,8 @@ public class WeatherProvider extends ContentProvider {
                         sortOrder);
                 break;
 
-                default:
-                    throw new UnsupportedOperationException("Not supported yet "+ uri);
+            default:
+                throw new UnsupportedOperationException("Not supported yet " + uri);
         }
         myCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return myCursor;
@@ -80,6 +82,51 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         throw new RuntimeException("Not supported yet");
+    }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+
+            case CODE_WEATHER:
+                db.beginTransaction();
+                int rowInserted = 0;
+
+                try {
+                    for (ContentValues values1 : values){
+
+                        long weatherDate = values1.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
+                        if (!SunshineDateUtils.isDateNormalized(weatherDate)){
+                            throw new IllegalArgumentException("Date must be normalized before insertion");
+                        }
+
+                        long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, values1);
+                        if (_id != -1){
+                            rowInserted ++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                }
+                finally {
+                    db.endTransaction();
+                }
+
+                if (rowInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+               return rowInserted;
+
+
+            default:
+                return super.bulkInsert(uri, values);
+        }
+
+
     }
 
     @Nullable

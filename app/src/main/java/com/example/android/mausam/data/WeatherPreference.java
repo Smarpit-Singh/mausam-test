@@ -9,15 +9,8 @@ import com.example.android.mausam.R;
 public class WeatherPreference {
 
 
-    public static final String PREF_CITY_NAME = "city_name";
     public static final String PREF_COORD_LAT = "coord_lat";
     public static final String PREF_COORD_LONG = "coord_long";
-
-    private static final String DEFAULT_WEATHER_LOCATION = "94043,USA";
-    private static final double[] DEFAULT_WEATHER_COORDINATES = {37.4284, 122.0724};
-
-    private static final String DEFAULT_MAP_LOCATION =
-            "1600 Amphitheatre Parkway, Mountain View, CA 94043";
 
 
     public static void setLocationDetails(Context context, double lat, double lon) {
