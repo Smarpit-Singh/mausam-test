@@ -97,21 +97,20 @@ public class WeatherProvider extends ContentProvider {
                 int rowInserted = 0;
 
                 try {
-                    for (ContentValues values1 : values){
+                    for (ContentValues values1 : values) {
 
                         long weatherDate = values1.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
-                        if (!SunshineDateUtils.isDateNormalized(weatherDate)){
+                        if (!SunshineDateUtils.isDateNormalized(weatherDate)) {
                             throw new IllegalArgumentException("Date must be normalized before insertion");
                         }
 
                         long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, values1);
-                        if (_id != -1){
-                            rowInserted ++;
+                        if (_id != -1) {
+                            rowInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
-                }
-                finally {
+                } finally {
                     db.endTransaction();
                 }
 
@@ -119,7 +118,7 @@ public class WeatherProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
 
-               return rowInserted;
+                return rowInserted;
 
 
             default:
@@ -137,8 +136,33 @@ public class WeatherProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        throw new RuntimeException("Not supported yet");
+        int rowDeleted;
+
+        if (selection == null) {
+            selection = "1";
+        }
+
+        switch (sUriMatcher.match(uri)) {
+
+            case CODE_WEATHER:
+                rowDeleted = dbHelper.getWritableDatabase().delete(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+
+        return rowDeleted;
     }
+
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
