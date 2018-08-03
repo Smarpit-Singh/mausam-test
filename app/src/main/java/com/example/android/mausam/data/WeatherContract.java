@@ -43,5 +43,6 @@ public class WeatherContract {
             long normalizedUtcNow = SunshineDateUtils.normalizeDate(System.currentTimeMillis());
             return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow;
         }
+
     }
 }
