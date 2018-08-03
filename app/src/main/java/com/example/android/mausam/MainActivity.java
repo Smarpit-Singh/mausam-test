@@ -2,17 +2,13 @@ package com.example.android.mausam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,16 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.example.android.mausam.adapter.ForecastAdapter;
 import com.example.android.mausam.data.WeatherContract;
 import com.example.android.mausam.data.WeatherPreference;
 import com.example.android.mausam.utils.FakeDataUtils;
-import com.example.android.mausam.utils.NetworkUtils;
-import com.example.android.mausam.utils.OpenWeatherJsonUtils;
-
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -119,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
                 Uri forecastQueryUri = WeatherContract.WeatherEntry.CONTENT_URI;
 
                 String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-                String selection = WeatherContract.WeatherEntry.getSqlSelectForTodayOnwards();
+                String selection = WeatherContract.WeatherEntry.getSqlSelectionForTodayOnwards();
 
                 return new CursorLoader(this,
                         forecastQueryUri,
@@ -137,9 +127,14 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         mForecastAdapter.swapCursor(data);
-        if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
+        if (mPosition == RecyclerView.NO_POSITION){
+            mPosition = 0;
+        }
+
         mRecyclerView.smoothScrollToPosition(mPosition);
-        if (data.getCount() != 0) showWeatherDataView();
+        if (data.getCount() != 0){
+            showWeatherDataView();
+        }
     }
 
     @Override
@@ -148,12 +143,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick(String weatherForDay) {
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
-        startActivity(intentToStartDetailActivity);
+    public void onClick(long date) {
+        Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+
+        Uri uriForDateClicked = WeatherContract.WeatherEntry.buildWeatherUriWithDate(date);
+        weatherDetailIntent.setData(uriForDateClicked);
+        startActivity(weatherDetailIntent);
     }
 
 

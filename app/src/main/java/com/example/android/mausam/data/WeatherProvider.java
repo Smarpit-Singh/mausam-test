@@ -18,7 +18,6 @@ public class WeatherProvider extends ContentProvider {
     public static final int CODE_WEATHER_WITH_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-
     private WeatherDBHelper dbHelper;
 
 
