@@ -39,6 +39,10 @@
             android:name=".data.WeatherProvider"
             android:authorities="com.example.android.mausam"
             android:exported="false"/>
+
+        <service
+            android:name=".sync.SunshineSyncIntentService"
+            android:exported="false" />
     </application>
 
 </manifest>

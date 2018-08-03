@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import com.example.android.mausam.adapter.ForecastAdapter;
 import com.example.android.mausam.data.WeatherContract;
 import com.example.android.mausam.data.WeatherPreference;
+import com.example.android.mausam.sync.SunshineSyncUtils;
 import com.example.android.mausam.utils.FakeDataUtils;
 
 public class MainActivity extends AppCompatActivity implements
@@ -57,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
 
-
-        FakeDataUtils.insertFakeData(this);
-
         mRecyclerView = findViewById(R.id.recyclerview_forecast);
 
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
@@ -79,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements
         showLoading();
 
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
+
+        SunshineSyncUtils.startImmediateSync(getApplicationContext());
 
     }
 
