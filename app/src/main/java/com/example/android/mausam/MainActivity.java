@@ -21,7 +21,6 @@ import com.example.android.mausam.adapter.ForecastAdapter;
 import com.example.android.mausam.data.WeatherContract;
 import com.example.android.mausam.data.WeatherPreference;
 import com.example.android.mausam.sync.SunshineSyncUtils;
-import com.example.android.mausam.utils.FakeDataUtils;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
