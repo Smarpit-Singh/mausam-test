@@ -3,9 +3,12 @@ package com.example.android.mausam.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.text.format.DateUtils;
 
 import com.example.android.mausam.data.WeatherContract;
+import com.example.android.mausam.data.WeatherPreference;
 import com.example.android.mausam.utils.NetworkUtils;
+import com.example.android.mausam.utils.NotificationUtils;
 import com.example.android.mausam.utils.OpenWeatherJsonUtils;
 
 import java.net.URL;
@@ -13,7 +16,6 @@ import java.net.URL;
 public class SunshineSyncTask {
 
     synchronized public static void syncWeather(Context context) {
-
 
         try {
 
@@ -33,12 +35,31 @@ public class SunshineSyncTask {
                         null,
                         null);
 
-
                 sunshineContentResolver.bulkInsert(
                         WeatherContract.WeatherEntry.CONTENT_URI,
                         weatherValues);
-            }
 
+
+                boolean notificationsEnabled = WeatherPreference.areNotificationsEnabled(context);
+
+
+                long timeSinceLastNotification = WeatherPreference
+                        .getEllapsedTimeSinceLastNotification(context);
+
+                boolean oneDayPassedSinceLastNotification = false;
+
+
+                if (timeSinceLastNotification >= DateUtils.DAY_IN_MILLIS) {
+                    oneDayPassedSinceLastNotification = true;
+                }
+
+
+                if (notificationsEnabled && oneDayPassedSinceLastNotification) {
+                    NotificationUtils.notifyUserOfNewWeather(context);
+                }
+
+
+            }
 
         } catch (Exception e) {
 
