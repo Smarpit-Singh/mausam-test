@@ -1,4 +1,43 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2016 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - This file contains all of the strings used throughout Sunshine. They can be accessed       -
+  - through calls to Context#getString. This strings are organized by where they are used in   -
+  - Sunshine.                                                                                  -
+  -                                                                                            -
+  - Throughout this file, you will see <xliff:g> tags. These help any potential translators    -
+  - properly translate your strings and also give developers that are looking at your strings  -
+  - an idea of exactly how they are used.                                                      -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+
+
+    <!-- - - - - - - - - - - - - -
+      - Used throughout Sunshine -
+      - - - - - - - - - - - - - -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - Used in Action Bar and in AndroidManifest to tell the device the name of this app. It's  -
+      - good practice to keep this short, so if your app's name was "The Greatest Weather App    -
+      - In the History of Mankind", your launcher icon isn't displayed with "The greatest Wea"   -
+      - or something similar.                                                                    -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <string name="app_name">Sunshine</string>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -20,10 +59,6 @@
     <string name="title_activity_detail">Details</string>
     <!-- Title of the SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
-
-    <string name="error_message">
-        An error has occurred. Please try again by clicking REFRESH
-    </string>
 
     <string name="content_authority">com.example.android.sunshine</string>
 
@@ -208,6 +243,5 @@
         High:<xliff:g id="high">%2$s</xliff:g>
         Low:<xliff:g id="low">%3$s</xliff:g>
     </string>
-    <string name="action_setting">Setting</string>
 
 </resources>
