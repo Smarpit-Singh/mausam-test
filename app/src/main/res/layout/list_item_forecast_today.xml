@@ -25,17 +25,15 @@
   - depending on whether or not it is being touched. These can be set programmatically in Java,  -
   - but again, we wanted to avoid making things too complicated.                                 -
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- COMPLETED (10) Color the TextViews for weather data appropriately -->
-<!-- COMPLETED (11) Color the background for today's weather data appropriately -->
-<!-- COMPLETED (12) Replace dimension values with @dimen resources -->
-<!-- COMPLETED (13) Use sans-serif-light font family for the temperature TextViews -->
+
+<!-- COMPLETED (4) Replace the background color for the today list item with today_touch_selector-->
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/today_touch_selector"
     android:paddingBottom="@dimen/today_forecast_list_item_vertical_padding"
     android:paddingTop="@dimen/today_forecast_list_item_vertical_padding">
 

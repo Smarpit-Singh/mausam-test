@@ -15,13 +15,12 @@
      limitations under the License.
 -->
 
-<!-- COMPLETED (7) Color the primary and secondary text appropriately -->
-<!-- COMPLETED (8) Replace dimension values with @dimen resources -->
-<!-- COMPLETED (9) Use sans-serif-light font family for the temperature TextViews -->
+<!-- COMPLETED (2) Use touch_selector as the background for the list item -->
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/touch_selector"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
